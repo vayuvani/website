@@ -43,7 +43,7 @@ function App() {
                     <VayuVaniTitle />
                   </Box>
                   <Box sx={{ display: 'flex', justifyContent: 'center', flexGrow: 1 }}>
-                    <Button color="inherit" component={Link} to="/about">About</Button>
+                    <Button color="inherit" component={Link} to="/">About</Button>
                     <Button color="inherit" component={Link} to="/getting-started">Getting Started</Button>
                     <Button color="inherit" component={Link} to="/groundstation-map">Groundstation Mesh</Button>
                     <Button color="inherit" component={Link} to="/live-packets">Live Packets</Button>
@@ -71,8 +71,7 @@ function App() {
               px: { xs: 2, sm: 3, md: 4 },
             }}>
               <Routes>
-                <Route path="/" element={<Installer />} />
-                <Route path="/about" element={<About />} />
+                <Route path="/" element={<About />} />
                 <Route path="/overview" element={<div>Under construction..</div>} />
                 <Route path="/getting-started" element={<div>Under construction..</div>} />
                 <Route path="/groundstation-map" element={<div>Under construction..</div>} />
