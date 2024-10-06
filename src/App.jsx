@@ -7,6 +7,7 @@ import DiscordIcon from '@mui/icons-material/Chat'; // Using Chat icon as a stan
 import VayuVaniTitle from './VayuVaniTitle';
 import Installer from './Installer';
 import About from './About';
+import Overview from "./Overview.jsx";
 
 const theme = createTheme({
   palette: {
@@ -72,7 +73,7 @@ function App() {
             }}>
               <Routes>
                 <Route path="/" element={<About />} />
-                <Route path="/overview" element={<div>Under construction..</div>} />
+                <Route path="/overview" element={<Overview/>} />
                 <Route path="/getting-started" element={<div>Under construction..</div>} />
                 <Route path="/groundstation-map" element={<div>Under construction..</div>} />
                 <Route path="/live-packets" element={<div>Under construction..</div>} />

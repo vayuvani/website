@@ -231,3 +231,26 @@ footer a:hover {
 .showcase-nav.next {
   right: 10px;
 }
+
+/* Overview Section Styling */
+.overview-container {
+  background-color: white;  /* Consistent with card backgrounds */
+  padding: 2rem;  /* Provides comfortable spacing */
+  border-radius: 8px;  /* Matches card border radius */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  /* Add a slight shadow for depth */
+  max-width: 1200px;  /* Keep the width consistent with the rest of the main content */
+  margin: 2rem auto;  /* Center the section and add vertical spacing */
+}
+
+.overview-container h2 {
+  font-size: 2rem;  /* Match heading size for consistency */
+  color: #1e3c72;  /* Maintain heading color */
+  text-align: center;
+  margin-bottom: 1.5rem;  /* Space below the heading */
+}
+
+.overview-container p {
+  text-align: justify;  /* Consistent text alignment */
+  line-height: 1.6;  /* Improve readability */
+  color: #333;  /* Maintain consistent text color */
+}
