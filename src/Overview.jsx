@@ -8,11 +8,14 @@ function Overview() {
 
         <div className="card-container">
           <div className="card">
-            <img
-                src={`/vv-hla-v2-notransparent.png`}
-                alt={`VayuVani High-Level Architecture`}
-                width={1000}
-            />
+            <div className="image-container">
+              <img
+                  src={`/vv-hla-v2-notransparent.png`}
+                  alt={`VayuVani High-Level Architecture`}
+                  width={1000}
+                  className="centered-image"
+              />
+            </div>
 
             <p>
               On the <a href={"/"}>About</a> page, I outlined how VayuVani
@@ -74,11 +77,14 @@ function Overview() {
               For example, this modular design allows for the following
               constellation:
             </p>
-            <img
-                src={`/vv-const.png`}
-                alt={`VayuVani High-Level Architecture`}
-                width={800}
-            />
+            <div className="image-container">
+              <img
+                  src={`/vv-const.png`}
+                  alt={`VayuVani High-Level Architecture`}
+                  width={800}
+                  className="centered-image"
+              />
+            </div>
 
             {/*<h4>Groundstation (GS)</h4>*/}
             {/*<p>*/}

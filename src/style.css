@@ -254,3 +254,15 @@ footer a:hover {
   line-height: 1.6;  /* Improve readability */
   color: #333;  /* Maintain consistent text color */
 }
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.centered-image {
+  max-width: 100%;
+  height: auto;
+}
