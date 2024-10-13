@@ -105,7 +105,8 @@ function App() {
                 <Route path="/getting-started" element={<GettingStarted/>} />
                 <Route path="/groundstation-map" element={<div>Under construction..</div>} />
                 <Route path="/live-packets" element={<div>Under construction..</div>} />
-                <Route path="/register-station" element={<GroundStationRegistrationForm />} />
+                <Route path="/register-station" element={<div>Under construction..</div>} />
+                {/*<Route path="/register-station" element={<GroundStationRegistrationForm />} />*/}
 
               </Routes>
             </Box>
