@@ -4,10 +4,9 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Box, AppBar, Toolbar, Button, Container, IconButton, SvgIcon } from '@mui/material';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import VayuVaniTitle from './VayuVaniTitle';
-import Installer from './Installer';
 import About from './About';
 import Overview from "./Overview.jsx";
-import GroundStationRegistrationForm from './GroundStationRegistrationForm.jsx';
+// import GroundStationRegistrationForm from './GroundStationRegistrationForm.jsx';
 import GettingStarted from "./GettingStarted.jsx";
 
 const theme = createTheme({
