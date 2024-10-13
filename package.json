@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@api/locationiq": "file:.api/apis/locationiq",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^6.1.1",
-    "@mui/material": "^6.1.1",
+    "@mui/icons-material": "^6.1.2",
+    "@mui/material": "^6.1.2",
+    "axios": "^1.7.7",
+    "framer-motion": "^11.11.4",
     "leaflet": "^1.9.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

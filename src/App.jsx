@@ -7,6 +7,8 @@ import VayuVaniTitle from './VayuVaniTitle';
 import Installer from './Installer';
 import About from './About';
 import Overview from "./Overview.jsx";
+import GroundStationRegistrationForm from './GroundStationRegistrationForm.jsx';
+import GettingStarted from "./GettingStarted.jsx";
 
 const theme = createTheme({
   palette: {
@@ -73,6 +75,7 @@ function App() {
                     <Button color="inherit" onClick={openInstaller}>Installer</Button>
                     <Button color="inherit" component={Link} to="/groundstation-map">Groundstation Mesh</Button>
                     <Button color="inherit" component={Link} to="/live-packets">Live Packets</Button>
+                    <Button color="inherit" component={Link} to="/register-station">Register Station</Button>
                   </Box>
                   <Box>
                     <IconButton color="inherit" href="https://discord.gg/Gr87RuqsEX" target="_blank" rel="noopener noreferrer">
@@ -99,9 +102,11 @@ function App() {
               <Routes>
                 <Route path="/" element={<About />} />
                 <Route path="/overview" element={<Overview/>} />
-                <Route path="/getting-started" element={<div>Under construction..</div>} />
+                <Route path="/getting-started" element={<GettingStarted/>} />
                 <Route path="/groundstation-map" element={<div>Under construction..</div>} />
                 <Route path="/live-packets" element={<div>Under construction..</div>} />
+                <Route path="/register-station" element={<GroundStationRegistrationForm />} />
+
               </Routes>
             </Box>
 
