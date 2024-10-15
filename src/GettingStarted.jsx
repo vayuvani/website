@@ -32,6 +32,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 import SettingsInputAntennaIcon from '@mui/icons-material/SettingsInputAntenna';
 import ComputerIcon from '@mui/icons-material/Computer';
+import DynamicStatusDisplay from './DynamicStatusDisplay';
 
 const boardTypes = [
   { name: "TTGO LoRa32 V2 (433MHz)", id: "TTGO_V2_LF" },
@@ -246,15 +247,26 @@ const GettingStarted = () => {
               <ListItem>
                 <ListItemText
                     primary="2. Follow Installer Instructions"
-                    secondary="Complete the steps on the installer page, including setting up WiFi."
+                    secondary="Complete the steps on the installer page, including setting up WiFi.
+                    On successful installation, you will see something similar in your OLED screen. The x.x.x.x here is the Groundstation IP denoted by `GS`, this the unique IP address the GS is available in your local network.
+                    "
                 />
               </ListItem>
+              <DynamicStatusDisplay
+                  gsIp={'x.x.x.x'}
+                  gssIp={'192.168.1.100'}
+                  port={'5683'}
+                  status={'IDLE'}
+                  line1="Waiting for permissions"
+                  line2="..."
+                  maxWidth={'300px'}
+              />
               <ListItem>
                 <ListItemText
                     primary="3. Groundstation IP"
                     secondary={
                       <>
-                        Once the setup is completed and it is connected to the Wifi, you will see the IP of the groundstation.
+                        As seen above you need to keep track of this IP address to make sure the App is able to talk to Groundstation.
                         Please enter the IP of the Groundstation (GS) here:
                         <TextField
                             fullWidth
@@ -267,16 +279,99 @@ const GettingStarted = () => {
                     }
                 />
               </ListItem>
-              <ListItem>
-                <ListItemText
-                    primary="4. Head on to  Groundstation Config Page"
-                    secondary={
-                      <>
-                        Goto <Link href="http://192.168.4.1./config" target="_blank" rel="noopener noreferrer">Groundstation Config</Link> .
-                      </>
-                    }
-                />
-              </ListItem>
+              <List>
+                <ListItem>
+                  <ListItemText
+                      primary="4. Identifying Board for further setup"
+                      secondary="On the first install, the firmware makes an effort to detect the board based on the ESP32.
+                      Regardless of this, it is important to set a correct board to be able to continue using VayuVani.
+                      Please select your board from the list, incase you have custom board select custom and add your pin configuration."
+                  />
+                </ListItem>
+              </List>
+
+              <Autocomplete
+                  options={boardTypes}
+                  getOptionLabel={(option) => option.name}
+                  renderInput={(params) => <TextField {...params} label="Select your board" />}
+                  onChange={handleBoardChange}
+                  sx={{ mb: 2 }}
+                  value={selectedBoard}
+              />
+
+              {selectedBoard && (
+                  selectedBoard.id === "CUSTOM" ? (
+                      <Accordion defaultExpanded>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                          <Typography>Custom Board Configuration</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                              <TextField
+                                  fullWidth
+                                  label="Board Name"
+                                  name="name"
+                                  value={boardConfig.name}
+                                  onChange={handleConfigChange}
+                                  type="text"
+                              />
+                            </Grid>
+                            <Grid item xs={6}>
+                              <FormControl fullWidth>
+                                <InputLabel>Radio Module</InputLabel>
+                                <Select
+                                    name="radio"
+                                    value={boardConfig.radio}
+                                    onChange={handleConfigChange}
+                                >
+                                  {radioModules.map((module) => (
+                                      <MenuItem key={module.value} value={module.value}>{module.label}</MenuItem>
+                                  ))}
+                                </Select>
+                              </FormControl>
+                            </Grid>
+                            <ConfigField name="aADDR" label="OLED I2C Address" tooltip="I2C address of the OLED display (in decimal format)" />
+                            <ConfigField name="oSDA" label="OLED SDA Pin" tooltip="OLED SDA pin" />
+                            <ConfigField name="oSCL" label="OLED SCL Pin" tooltip="OLED SCL pin" />
+                            <ConfigField name="oRST" label="OLED RST Pin" tooltip="OLED RST pin" />
+                            <ConfigField name="pBut" label="User Button Pin" tooltip="GPIO used for the board user button" />
+                            <ConfigField name="led" label="LED Pin" tooltip="GPIO used for the main board indicator led" />
+                            <ConfigField name="lNSS" label="LoRa NSS Pin" tooltip="LoRa NSS pin" />
+                            <ConfigField name="lDIO0" label="LoRa DIO0 Pin" tooltip="LoRa DIO0 pin" />
+                            <ConfigField name="lDIO1" label="LoRa DIO1 Pin" tooltip="LoRa DIO1 pin" />
+                            <ConfigField name="lBUSSY" label="LoRa BUSY Pin" tooltip="LoRa BUSY pin" />
+                            <ConfigField name="lRST" label="LoRa RST Pin" tooltip="LoRa RST pin" />
+                            <ConfigField name="lMISO" label="LoRa MISO Pin" tooltip="LoRa MISO pin" />
+                            <ConfigField name="lMOSI" label="LoRa MOSI Pin" tooltip="LoRa MOSI pin" />
+                            <ConfigField name="lSCK" label="LoRa SCK Pin" tooltip="LoRa SCK pin" />
+                            <Grid item xs={6}>
+                              <TextField
+                                  fullWidth
+                                  label="LoRa TCXO Voltage"
+                                  name="lTCXOV"
+                                  value={boardConfig.lTCXOV}
+                                  onChange={handleConfigChange}
+                                  type="number"
+                                  InputProps={{
+                                    endAdornment: (
+                                        <Tooltip title="LoRa TXCO voltage (float value, only used for sx126x modules)">
+                                          <IconButton size="small">
+                                            <HelpOutlineIcon />
+                                          </IconButton>
+                                        </Tooltip>
+                                    ),
+                                  }}
+                              />
+                            </Grid>
+                          </Grid>
+                        </AccordionDetails>
+                      </Accordion>
+                  ) : (
+                      <Box sx={{ mt: 2, mb: 2 }}>
+                      </Box>
+                  )
+              )}
             </List>
           </>
       ),
@@ -285,107 +380,30 @@ const GettingStarted = () => {
       label: 'Setting up your Groundstation',
       description: (
           <>
-            <Typography paragraph>
+            <Typography>
               Now that you have finally flashed VayuVani and hopefully connected (refer to previous steps if you have issues connecting), your Groundstation is already connected and available on the network.
-              Next step, we need to start setting up the Groundstation and then in the next step we will configure the App.
+              Next step, we need finalize the Groundstation configuration and then in the next step we will configure the App.
             </Typography>
-            <List>
-              <ListItem>
-                <ListItemText
-                    primary="1. Identify Board for setup"
-                    secondary="Select your board type or configure a custom board for your VayuVani ground station."
-                />
-              </ListItem>
-            </List>
-
-            <Autocomplete
-                options={boardTypes}
-                getOptionLabel={(option) => option.name}
-                renderInput={(params) => <TextField {...params} label="Select your board" />}
-                onChange={handleBoardChange}
-                sx={{ mb: 2 }}
-                value={selectedBoard}
+            <br/>
+            <DynamicStatusDisplay
+                gsIp={gsIp}
+                gssIp={'192.168.1.100'}
+                port={'5683'}
+                status={'IDLE'}
+                line1="Waiting for permissions"
+                line2="..."
+                maxWidth={'300px'}
             />
-
-            {selectedBoard && (
-                selectedBoard.id === "CUSTOM" ? (
-                    <Accordion defaultExpanded>
-                      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography>Custom Board Configuration</Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <Grid container spacing={2}>
-                          <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                label="Board Name"
-                                name="name"
-                                value={boardConfig.name}
-                                onChange={handleConfigChange}
-                                type="text"
-                            />
-                          </Grid>
-                          <Grid item xs={6}>
-                            <FormControl fullWidth>
-                              <InputLabel>Radio Module</InputLabel>
-                              <Select
-                                  name="radio"
-                                  value={boardConfig.radio}
-                                  onChange={handleConfigChange}
-                              >
-                                {radioModules.map((module) => (
-                                    <MenuItem key={module.value} value={module.value}>{module.label}</MenuItem>
-                                ))}
-                              </Select>
-                            </FormControl>
-                          </Grid>
-                          <ConfigField name="aADDR" label="OLED I2C Address" tooltip="I2C address of the OLED display (in decimal format)" />
-                          <ConfigField name="oSDA" label="OLED SDA Pin" tooltip="OLED SDA pin" />
-                          <ConfigField name="oSCL" label="OLED SCL Pin" tooltip="OLED SCL pin" />
-                          <ConfigField name="oRST" label="OLED RST Pin" tooltip="OLED RST pin" />
-                          <ConfigField name="pBut" label="User Button Pin" tooltip="GPIO used for the board user button" />
-                          <ConfigField name="led" label="LED Pin" tooltip="GPIO used for the main board indicator led" />
-                          <ConfigField name="lNSS" label="LoRa NSS Pin" tooltip="LoRa NSS pin" />
-                          <ConfigField name="lDIO0" label="LoRa DIO0 Pin" tooltip="LoRa DIO0 pin" />
-                          <ConfigField name="lDIO1" label="LoRa DIO1 Pin" tooltip="LoRa DIO1 pin" />
-                          <ConfigField name="lBUSSY" label="LoRa BUSY Pin" tooltip="LoRa BUSY pin" />
-                          <ConfigField name="lRST" label="LoRa RST Pin" tooltip="LoRa RST pin" />
-                          <ConfigField name="lMISO" label="LoRa MISO Pin" tooltip="LoRa MISO pin" />
-                          <ConfigField name="lMOSI" label="LoRa MOSI Pin" tooltip="LoRa MOSI pin" />
-                          <ConfigField name="lSCK" label="LoRa SCK Pin" tooltip="LoRa SCK pin" />
-                          <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                label="LoRa TCXO Voltage"
-                                name="lTCXOV"
-                                value={boardConfig.lTCXOV}
-                                onChange={handleConfigChange}
-                                type="number"
-                                InputProps={{
-                                  endAdornment: (
-                                      <Tooltip title="LoRa TXCO voltage (float value, only used for sx126x modules)">
-                                        <IconButton size="small">
-                                          <HelpOutlineIcon />
-                                        </IconButton>
-                                      </Tooltip>
-                                  ),
-                                }}
-                            />
-                          </Grid>
-                        </Grid>
-                      </AccordionDetails>
-                    </Accordion>
-                ) : (
-                    <Box sx={{ mt: 2, mb: 2 }}>
-                    </Box>
-                )
-            )}
             <ListItem>
               <ListItemText
                   primary="2. Identify your App IP address (internal)"
                   secondary={
                     <>
-                      To find your App IP address:
+                      Now that we know GS IP, we need to figure out the App IP (your computer where App is running), to create a bi-directional communication.
+                      <p>
+
+                      </p>
+                      <br/>
                       <ol>
                         <li>On Windows: Open Command Prompt and type 'ipconfig'</li>
                         <li>On macOS or Linux: Open Terminal and type 'ifconfig' or 'ip addr'</li>
@@ -403,22 +421,9 @@ const GettingStarted = () => {
                   }
               />
             </ListItem>
-
-            <ListItem>
-              <ListItemText
-                  primary="3. Configure Groundstation"
-                  secondary={
-                    <>
-                      Go to <Link href={`http://${gsIp}/config`} target="_blank" rel="noopener noreferrer">Groundstation Config</Link> and enter the missing info below .
-                      Save and restart and you're ready for the App.
-                    </>
-                  }
-              />
-            </ListItem>
-
             <Box sx={{ mt: 2, mb: 2 }}>
               <Typography variant="h6" gutterBottom>
-                Your Info
+                Your Configuration
               </Typography>
               {
                 getBoardInfo().name === "Custom" ? (
@@ -451,6 +456,17 @@ const GettingStarted = () => {
                 Groundstation Server IP: <b>{gssIp}</b>
               </Typography>
             </Box>
+            <ListItem>
+              <ListItemText
+                  primary="3. Configure Groundstation"
+                  secondary={
+                    <>
+                      Go to <Link href={`http://${gsIp}/config`} target="_blank" rel="noopener noreferrer">Groundstation Config</Link> and enter the missing info using the above information.
+                      Save and restart and you're ready for the App.
+                    </>
+                  }
+              />
+            </ListItem>
           </>
       ),
     },
@@ -458,14 +474,20 @@ const GettingStarted = () => {
       label: 'Configure the App',
       description: (
           <>
-            <Typography paragraph>
-              Configure your VayuVani station:
-            </Typography>
+            <DynamicStatusDisplay
+                gsIp={gsIp}
+                gssIp={gssIp}
+                port={'5683'}
+                status={'IDLE'}
+                line1="Waiting for permissions"
+                line2="..."
+                maxWidth={'300px'}
+            />
             <List>
               <ListItem>
                 <ListItemText
                     primary="1. Connect to WiFi"
-                    secondary="Ensure your Groundstation (board) is connected to WiFi as instructed on the installer page."
+                    secondary="Ensure that your computer is connected to the same Wifi (network) as the Groundstation"
                 />
               </ListItem>
               <ListItem>
@@ -473,26 +495,43 @@ const GettingStarted = () => {
                     primary="2. Download the VayuVani App"
                     secondary={
                       <>
-                        Visit the <Link href="https://github.com/vayuvani" target="_blank" rel="noopener noreferrer">VayuVani GitHub page</Link> and download the app for your operating system.
+                        Visit the <Link href="/downloads" target="_blank"
+                                        rel="noopener noreferrer">Downloads
+                        Page</Link> and download the app for your operating
+                        system.
+                        If you are a developer or want to make your own App, you
+                        can download the internal Groundstation Server (GSS)
+                        binaries from <Link
+                          href="https://github.com/vayuvani/groundstation-server"
+                          target="_blank" rel="noopener noreferrer">VayuVani
+                        Github Page</Link>.
                       </>
                     }
                 />
               </ListItem>
               <ListItem>
-                <ListItemText
-                    primary="3. Open the VayuVani App"
-                    secondary="Launch the app you've just downloaded."
+                <img
+                    src={`/showcase/vv0.png`}
+                    width={500}
                 />
+                <ListItemText
+                  primary="3. Open the VayuVani App"
+                  secondary="Launch the app you've just downloaded and register to connect the Groundstation."
+              />
+
               </ListItem>
               <ListItem>
+                <img
+                    src={`/showcase/vv8.png`}
+                    width={500}
+                />
                 <ListItemText
                     primary="4. Register Your Station"
                     secondary="Follow the in-app instructions to register your ground station."
                 />
               </ListItem>
-              {/* Add more steps as needed, up to around 6 steps */}
             </List>
-            {/* Add relevant images for each step */}
+
           </>
       ),
     },
@@ -500,29 +539,45 @@ const GettingStarted = () => {
       label: 'Using VayuVani: Receive Your First Satellite Packet!',
       description: (
           <>
-            <Typography paragraph>
+            <Typography>
               Now that your VayuVani station is set up, let's receive your first satellite packet:
             </Typography>
             <List>
               <ListItem>
+                <img
+                    src={`/showcase/vv2.png`}
+                    width={500}
+                />
                 <ListItemText
                     primary="1. Set Up Satellite Tracking"
                     secondary="Configure automatic tracking or manually select satellites in the app."
                 />
               </ListItem>
               <ListItem>
+                <img
+                    src={`/showcase/vv1.png`}
+                    width={500}
+                />
                 <ListItemText
                     primary="2. Enable Auto-tuning"
                     secondary="Allow VayuVani to automatically adjust for optimal reception."
                 />
               </ListItem>
               <ListItem>
+                <img
+                    src={`/showcase/vv3.png`}
+                    width={500}
+                />
                 <ListItemText
                     primary="3. Monitor the Packet Dashboard"
                     secondary="Watch for incoming packets on the app's dashboard."
                 />
               </ListItem>
               <ListItem>
+                <img
+                    src={`/showcase/vv9.png`}
+                    width={480}
+                />
                 <ListItemText
                     primary="4. Manual Tuning (Optional)"
                     secondary="Fine-tune your settings for specific satellites if needed."
