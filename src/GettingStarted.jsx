@@ -239,7 +239,7 @@ const GettingStarted = () => {
                     primary="1. Flash the Firmware"
                     secondary={
                       <>
-                        Click the "Installer" button or visit <Link href="https://installer.vayuvani.com/" target="_blank" rel="noopener noreferrer">VayuVani Installer</Link> to flash the firmware.
+                        Click the "Installer" button or visit <Link data-umami-event="getting-started-installer" href="https://installer.vayuvani.com/" target="_blank" rel="noopener noreferrer">VayuVani Installer</Link> to flash the firmware.
                       </>
                     }
                 />

@@ -71,16 +71,16 @@ function App() {
                   <Box sx={{ display: 'flex', justifyContent: 'center', flexGrow: 1 }}>
                     <Button color="inherit" component={Link} to="/">About</Button>
                     <Button color="inherit" component={Link} to="/getting-started">Getting Started</Button>
-                    <Button color="inherit" onClick={openInstaller}>Installer</Button>
+                    <Button data-umami-event="navigation-installer" color="inherit" onClick={openInstaller}>Installer</Button>
                     <Button color="inherit" component={Link} to="/groundstation-map">Groundstation Mesh</Button>
                     <Button color="inherit" component={Link} to="/live-packets">Live Packets</Button>
                     <Button color="inherit" component={Link} to="/register-station">Register Station</Button>
                   </Box>
                   <Box>
-                    <IconButton color="inherit" href="https://discord.gg/Gr87RuqsEX" target="_blank" rel="noopener noreferrer">
+                    <IconButton data-umami-event="navigation-discord"  color="inherit" href="https://discord.gg/Gr87RuqsEX" target="_blank" rel="noopener noreferrer">
                       <DiscordIcon />
                     </IconButton>
-                    <IconButton color="inherit" href="https://x.com/this_is_tckb" target="_blank" rel="noopener noreferrer">
+                    <IconButton data-umami-event="navigation-social-media-x"  color="inherit" href="https://x.com/this_is_tckb" target="_blank" rel="noopener noreferrer">
                       <TwitterIcon />
                     </IconButton>
                   </Box>
